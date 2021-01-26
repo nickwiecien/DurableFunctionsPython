@@ -1,0 +1,17 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "input",
+      "type": "activityTrigger",
+      "direction": "in"
+    },
+    {
+      "type": "blob",
+      "direction": "in",
+      "name": "inputBlob",
+      "path": "data/cf-input.json",
+      "connection": "STORAGE_ACCOUNT_CONNECTION"
+    }
+  ]
+}

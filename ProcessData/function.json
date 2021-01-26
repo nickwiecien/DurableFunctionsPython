@@ -1,0 +1,18 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "input",
+      "type": "activityTrigger",
+      "direction": "in"
+    },
+    {
+      "name": "table",
+      "type": "table",
+      "tableName": "ProcessDataResults",
+      "partitionKey": "partitionKey",
+      "connection": "STORAGE_ACCOUNT_CONNECTION",
+      "direction": "out"
+    }
+  ]
+}

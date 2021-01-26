@@ -1,0 +1,14 @@
+{
+  "regions": [
+    "NA",
+	  "LA",
+	  "EMEA",
+	  "AP"
+  ],
+  "divisions": [
+    "IATD",
+	  "DMSD",
+	  "ASD",
+	  "AASD"
+  ]
+}
