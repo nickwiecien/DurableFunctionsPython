@@ -25,9 +25,6 @@ def orchestrator_function(context: df.DurableOrchestrationContext):
     sales_data = list(chain.from_iterable(sales_data))
     sales_data = [json.loads(x) for x in sales_data]
 
-    #Debugging
-    sales_data = sales_data[0:10]
-
     process_data_tasks = []
 
     time = datetime.now()
