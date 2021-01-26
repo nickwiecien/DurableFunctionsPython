@@ -5,18 +5,17 @@ import json
 import azure.functions as func
 from helper import ProcessDataInput, ProcessDataResult
 
-def main(input: str, table: func.Out[str]) -> str:
-    input_json = json.loads(input)
-    process_data_input = ProcessDataInput(input_json['region'], input_json['division'], input_json['customerId'], input_json['runId'], input_json['monthlySalesTotal'])
+def main(input: ProcessDataInput, table: func.Out[str]) -> str:
+
     time.sleep(1)
 
     random_result = random.random()
-    row_key = '{}-{}-{}'.format(process_data_input.region, process_data_input.division, process_data_input.customerId)
+    row_key = '{}-{}-{}'.format(input.region, input.division, input.customerId)
 
-    process_data_result = ProcessDataResult(process_data_input.region, process_data_input.division, 
-        process_data_input.customerId, random_result, row_key, process_data_input.runId)
+    process_data_result = ProcessDataResult(input.region, input.division, 
+        input.customerId, random_result, row_key, input.runId)
         
-    table.set(process_data_result.to_json())
+    table.set(ProcessDataResult.to_json(process_data_result))
 
-    return process_data_result.to_json()
+    return process_data_result
     

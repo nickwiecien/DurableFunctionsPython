@@ -7,4 +7,3 @@ azure-functions-durable>=1.0.0b12
 pyodbc
 azure-cosmosdb-table
 cryptography==2.8
-pandas

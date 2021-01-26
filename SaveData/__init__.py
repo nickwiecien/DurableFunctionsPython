@@ -24,7 +24,6 @@ def main(runId: str, table) -> str:
     for row in rows:
         tuples.append((row['PartitionKey'], row['region'], row['division'], row['customerId'], row['salesAnomalyCalculation']))
 
-    #insert tuples into db - https://stackoverflow.com/questions/5693885/pyodbc-very-slow-bulk-insert-speed
     connection_string = os.environ.get('AZURE_SQL_CONNECTION_STRING')
     with pyodbc.connect(connection_string) as conn:
         with conn.cursor() as cursor:

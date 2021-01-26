@@ -1,25 +1,42 @@
-import json
+#Serializable class definition reference:
+#https://github.com/Azure/azure-functions-durable-python/tree/dev/samples/serialize_arguments
 
-class GetSalesDataInput:
+import json
+import typing
+
+class GetSalesDataInput(object):
   def __init__(self, division, region):
     self.division = division
     self.region = region
 
-  def to_json(self):
-    return json.dumps(self.__dict__)
+  @staticmethod
+  def to_json(obj: object) -> str:
+    return json.dumps(obj.__dict__)
+ 
+  @staticmethod
+  def from_json(json_str: str) -> object:
+      inputs = json.loads(json_str)
+      obj = GetSalesDataInput(inputs['division'], inputs['region'])
+      return obj
 
-class GetSalesDataOutput:
+class GetSalesDataOutput(object):
     def __init__(self, region, division, customerId, monthlySalesTotal):
         self.region = region
         self.division = division
         self.customerId = customerId
         self.monthlySalesTotal = monthlySalesTotal
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    @staticmethod
+    def to_json(obj: object) -> str:
+        return json.dumps(obj.__dict__)
 
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = GetSalesDataOutput(inputs['region'], inputs['division'], inputs['customerId'], inputs['monthlySalesTotal'])
+        return obj
 
-class ProcessDataInput:
+class ProcessDataInput(object):
     def __init__(self, region, division, customerId, runId, monthlySalesTotal):
         self.region = region
         self.division = division
@@ -27,10 +44,17 @@ class ProcessDataInput:
         self.runId = runId
         self.monthlySalesTotal = monthlySalesTotal
     
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    @staticmethod
+    def to_json(obj: object) -> str:
+        return json.dumps(obj.__dict__)
 
-class ProcessDataResult:
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = ProcessDataInput(inputs['region'], inputs['division'], inputs['customerId'], inputs['runId'], inputs['monthlySalesTotal'])
+        return obj
+
+class ProcessDataResult(object):
     def __init__(self, region, division, customerId, salesAnomalyCalculation, rowKey, partitionKey):
         self.region = region
         self.division = division
@@ -39,18 +63,32 @@ class ProcessDataResult:
         self.rowKey = rowKey
         self.partitionKey = partitionKey
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    @staticmethod
+    def to_json(obj: object) -> str:
+        return json.dumps(obj.__dict__)
 
-class SalesAggregateInput:
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = ProcessDataResult(inputs['region'], inputs['division'], inputs['customerId'], inputs['salesAnomalyCalculation'], inputs['rowKey'], inputs['partitionKey'])
+        return obj
+
+class SalesAggregateInput(object):
     def __init__(self, regions, divisions):
         self.regions = regions
         self.divisions = divisions
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    @staticmethod
+    def to_json(obj: object) -> str:
+        return json.dumps(obj.__dict__)
+
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = SalesAggregateInput(inputs['regions'], inputs['divisions'])
+        return obj
         
-class SalesAnomaly:
+class SalesAnomaly(object):
     def __init__(self, salesAnomalyId, runId, region, division, customerId, anomalyCalculationResult):
         self.salesAnomalyId = salesAnomalyId
         self.runId = runId
@@ -59,10 +97,17 @@ class SalesAnomaly:
         self.customerId = customerId
         self.anomalyCalculationResult = anomalyCalculationResult
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    @staticmethod
+    def to_json(obj: object) -> str:
+        return json.dumps(obj.__dict__)
 
-class SalesDataItem:
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = SalesAnomaly(inputs['salesAnomalyId'], inputs['runId'], inputs['region'], inputs['division'], inputs['customerId'], inputs['anomalyCalculationResult'])
+        return obj
+
+class SalesDataItem(object):
     def __init__(self, salesDataId, region, division, customerId, transactionDate, transactionAmount):
         self.salesDataId = salesDataId
         self.region = region
@@ -71,13 +116,27 @@ class SalesDataItem:
         self.transactionDate = transactionDate
         self.transactionAmount = transactionAmount
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    @staticmethod
+    def to_json(obj: object) -> str:
+        return json.dumps(obj.__dict__)
 
-class SalesRecord:
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = SalesDataItem(inputs['salesDataId'], inputs['region'], inputs['division'], inputs['customerId'], inputs['transactinoDate'], inputs['transactionAmount'])
+        return obj
+
+class SalesRecord(object):
     def __init__(self, transactionDate, transactionAmount):
         self.transactionDate = transactionDate
         self.transactionAmount = transactionAmount
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    @staticmethod
+    def to_json(obj: object) -> str:
+        return json.dumps(obj.__dict__)
+
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = SalesRecord(inputs['transactionDate'], inputs['transactionAmount'])
+        return obj

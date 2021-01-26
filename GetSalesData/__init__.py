@@ -4,9 +4,7 @@ import json
 import pyodbc
 import os
 
-def main(input: str) -> str:
-    input_json = json.loads(input)
-    sales_data_input = GetSalesDataInput(input_json['division'], input_json['region'])
+def main(input: GetSalesDataInput) -> str:
 
     output = []
 
@@ -15,7 +13,7 @@ def main(input: str) -> str:
     connection_string = os.environ.get('AZURE_SQL_CONNECTION_STRING')
     with pyodbc.connect(connection_string) as conn:
         with conn.cursor() as cursor:
-            sql = "SELECT * FROM SalesData WHERE Region='{}' AND Division='{}'".format(sales_data_input.region, sales_data_input.division)
+            sql = "SELECT * FROM SalesData WHERE Region='{}' AND Division='{}'".format(input.region, input.division)
             cursor.execute(sql)
             row = cursor.fetchone()
             while row:
@@ -29,6 +27,6 @@ def main(input: str) -> str:
             filtered = [x for x in materialized_data if x.customerId==id]
             first = filtered[0]
             monthly_sales_total = float(sum(x.transactionAmount for x in filtered))
-            output.append(GetSalesDataOutput(first.region, first.division, first.customerId, monthly_sales_total).to_json())
+            output.append(GetSalesDataOutput(first.region, first.division, first.customerId, monthly_sales_total))
 
-    return json.dumps(output)
+    return output
