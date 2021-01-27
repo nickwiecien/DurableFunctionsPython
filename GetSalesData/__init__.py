@@ -1,10 +1,10 @@
 import logging
-from helper import GetSalesDataInput, SalesDataItem, GetSalesDataOutput
+from helper import GetSalesDataInput, SalesDataItem, GetSalesDataOutput, GetSalesDataOutputBob
 import json
 import pyodbc
 import os
 
-def main(input: GetSalesDataInput) -> str:
+async def main(input: GetSalesDataInput) -> str:
 
     materialized_data = []
 
@@ -16,7 +16,7 @@ def main(input: GetSalesDataInput) -> str:
             cursor.execute(sql)
             row = cursor.fetchone()
             while row:
-                new_sales_data_item = SalesDataItem(row[0], row[1], row[2], row[3], row[4], row[5])
+                new_sales_data_item = SalesDataItem(row[0], row[1], row[2], row[3], str(row[4]), float(row[5]))
                 materialized_data.append(new_sales_data_item)
                 row = cursor.fetchone()
 
@@ -30,6 +30,7 @@ def main(input: GetSalesDataInput) -> str:
             filtered = [x for x in materialized_data if x.customerId==id]
             first = filtered[0]
             monthly_sales_total = float(sum(x.transactionAmount for x in filtered))
-            output.append(GetSalesDataOutput(first.region, first.division, first.customerId, monthly_sales_total))
+            # output.append(GetSalesDataOutput(first.region, first.division, first.customerId, monthly_sales_total))
+            output.append(GetSalesDataOutputBob(first.region, first.division, first.customerId, filtered))
 
     return output

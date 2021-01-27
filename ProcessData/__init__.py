@@ -5,10 +5,10 @@ import json
 import azure.functions as func
 from helper import ProcessDataInput, ProcessDataResult
 
-def main(input: ProcessDataInput, table: func.Out[str]) -> str:
+async def main(input: ProcessDataInput, table: func.Out[str]) -> str:
 
     #Simulating ML magic
-    time.sleep(5)
+    time.sleep(1)
 
     #Random number used in lieu of a true anomaly prediction; this should be a model prediction
     random_result = random.random()

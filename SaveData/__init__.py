@@ -14,7 +14,7 @@ def chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
-def main(runId: str) -> str:
+async def main(runId: str) -> str:
 
     #Establish connection to Azure Table storage
     table_service = TableService(account_name=os.environ.get('STORAGE_ACCOUNT_NAME'), account_key=os.environ.get('STORAGE_ACCOUNT_KEY'))

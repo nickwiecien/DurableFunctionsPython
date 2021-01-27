@@ -123,7 +123,7 @@ class SalesDataItem(object):
     @staticmethod
     def from_json(json_str: str) -> object:
         inputs = json.loads(json_str)
-        obj = SalesDataItem(inputs['salesDataId'], inputs['region'], inputs['division'], inputs['customerId'], inputs['transactinoDate'], inputs['transactionAmount'])
+        obj = SalesDataItem(inputs['salesDataId'], inputs['region'], inputs['division'], inputs['customerId'], inputs['transactionDate'], inputs['transactionAmount'])
         return obj
 
 class SalesRecord(object):
@@ -139,4 +139,27 @@ class SalesRecord(object):
     def from_json(json_str: str) -> object:
         inputs = json.loads(json_str)
         obj = SalesRecord(inputs['transactionDate'], inputs['transactionAmount'])
+        return obj
+
+class GetSalesDataOutputBob(object):
+    def __init__(self, region, division, customer, SalesRecords):
+        self.region = region
+        self.division = division
+        self.customer = customer
+        self.SalesRecords = SalesRecords
+ 
+    @staticmethod
+    def to_json(obj: object) -> str:
+        ret_obj = {
+            'region': obj.region,
+            'division': obj.division,
+            'customer': obj.customer,
+            'SalesRecords': json.dumps([SalesDataItem.to_json(x) for x in obj.SalesRecords])
+        }
+        return json.dumps(ret_obj)
+ 
+    @staticmethod
+    def from_json(json_str: str) -> object:
+        inputs = json.loads(json_str)
+        obj = GetSalesDataOutput(inputs['region'], inputs['division'], inputs['customer'], [SalesDataItem.from_json(x) for x in json.loads(inputs['SalesRecords'])])
         return obj
