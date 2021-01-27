@@ -7,14 +7,19 @@ from helper import ProcessDataInput, ProcessDataResult
 
 def main(input: ProcessDataInput, table: func.Out[str]) -> str:
 
-    time.sleep(1)
+    #Simulating ML magic
+    time.sleep(5)
 
+    #Random number used in lieu of a true anomaly prediction; this should be a model prediction
     random_result = random.random()
+
+    #Generate a unique row key for each prediction
     row_key = '{}-{}-{}'.format(input.region, input.division, input.customerId)
 
     process_data_result = ProcessDataResult(input.region, input.division, 
         input.customerId, random_result, row_key, input.runId)
-        
+
+    #Push result to Azure Table defined in input bindings        
     table.set(ProcessDataResult.to_json(process_data_result))
 
     return process_data_result

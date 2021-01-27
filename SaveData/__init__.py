@@ -14,12 +14,16 @@ def chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
-def main(runId: str, table) -> str:
+def main(runId: str) -> str:
 
+    #Establish connection to Azure Table storage
     table_service = TableService(account_name=os.environ.get('STORAGE_ACCOUNT_NAME'), account_key=os.environ.get('STORAGE_ACCOUNT_KEY'))
     
+    #Query all rows based on parition key of interest
+    #Note: no result filtering is currently being done, custom logic can be added to filter results in a meaningful way
     rows = table_service.query_entities(os.environ.get('STORAGE_ACCOUNT_TABLE'), filter="PartitionKey eq '{}'".format(runId))
 
+    #Push results to backend database (sample code shown for Azure SQL DB)
     tuples = []
     for row in rows:
         tuples.append((row['PartitionKey'], row['region'], row['division'], row['customerId'], row['salesAnomalyCalculation']))

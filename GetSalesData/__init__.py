@@ -6,10 +6,9 @@ import os
 
 def main(input: GetSalesDataInput) -> str:
 
-    output = []
-
     materialized_data = []
 
+    #Establish connection to backend database, query sales data by region/division pair
     connection_string = os.environ.get('AZURE_SQL_CONNECTION_STRING')
     with pyodbc.connect(connection_string) as conn:
         with conn.cursor() as cursor:
@@ -20,9 +19,13 @@ def main(input: GetSalesDataInput) -> str:
                 new_sales_data_item = SalesDataItem(row[0], row[1], row[2], row[3], row[4], row[5])
                 materialized_data.append(new_sales_data_item)
                 row = cursor.fetchone()
+
+    output = []
     
     if len(materialized_data)>0:
+        #Gather list of unique customers (for the target division/region)
         customer_ids = list(set([x.customerId for x in materialized_data]))
+        #Calculate total monthly sales for each customer
         for id in customer_ids:
             filtered = [x for x in materialized_data if x.customerId==id]
             first = filtered[0]

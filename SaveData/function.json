@@ -5,13 +5,6 @@
       "name": "runId",
       "type": "activityTrigger",
       "direction": "in"
-    },
-    {
-      "name": "table",
-      "type": "table",
-      "tableName": "ProcessDataResults",
-      "connection": "STORAGE_ACCOUNT_CONNECTION",
-      "direction": "in"
     }
   ]
 }
